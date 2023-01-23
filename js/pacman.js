@@ -1,16 +1,23 @@
 class Pacman extends GameObject {
-    pos = new Vector2(40, 40);
     velocity = new Vector2(0, 0);
 
-    size = 10;
+    size  = 10;
     speed = 1.5;
 
     onUpdate() {
         this.pos.add(this.velocity);
+
+        Game.objects.forEach(obj => {
+            if (obj.name !== 'dot')
+                return;
+
+            if (this.pos.dist(obj.pos) < obj.size * 2)
+                Game.destroyGameObject(obj);
+        });
     }
 
     onDraw(ctx, frame) {
-        let rotationOffset = 0;
+        let rotationOffset = Math.atan2(this.velocity.y, this.velocity.x);
         let mouthOffset = Math.PI * 2 * ((Math.cos(frame / 4) + 1) / 16);
 
         ctx.fillStyle = 'rgb(255, 150, 0)';

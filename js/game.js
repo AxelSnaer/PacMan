@@ -28,8 +28,12 @@ const Game = {
         window.requestAnimationFrame(this.update.bind(this));
     },
 
-    newGameObject(object) {
-        this.objects.push(object);
+    newGameObject(type, x, y, name) {
+        this.objects.push(new type(x, y, name));
+    },
+
+    destroyGameObject(object) {
+        this.objects.splice(this.objects.indexOf(object), 1);
     },
 
     onKeyDown(e) {
