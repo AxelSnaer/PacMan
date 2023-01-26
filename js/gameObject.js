@@ -4,7 +4,7 @@ class GameObject {
         this.classId = new.target.name;
 
         this.collider = null;
-        this.drawCollider = true;
+        this.drawCollider = false;
 
         this.onInit();
     }
