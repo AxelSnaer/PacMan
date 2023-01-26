@@ -1,12 +1,16 @@
 class GameObject {
     constructor(x, y, name) {
         this.pos = new Vector2(x || 0, y || 0);
-        this.name = 'object';
+        this.classId = new.target.name;
 
         this.collider = null;
         this.drawCollider = true;
 
         this.onInit();
+    }
+
+    isOfType(type) {
+        return type.name == this.classId;
     }
 
     addCollider(width, height, offset) {

@@ -5,7 +5,6 @@ class Pacman extends GameObject {
     speed = 1.5;
 
     onInit() {
-        this.name = 'pacman';
         this.addCollider(this.size, this.size);
     }
 
@@ -13,7 +12,7 @@ class Pacman extends GameObject {
         this.pos.add(this.velocity);
 
         Game.objects.forEach(obj => {
-            if (obj.name !== 'dot')
+            if (!obj.isOfType(Dot))
                 return;
 
             if (this.pos.dist(obj.pos) < obj.size * 2)
@@ -38,7 +37,7 @@ class Pacman extends GameObject {
         let eyeDistanceOffset = this.size * (2/3);
         let eyePositionOffset = new Vector2(Math.cos(rotationOffset + eyeRotationOffset), Math.sin(rotationOffset + eyeRotationOffset)).multiply(eyeDistanceOffset);
 
-        ctx.fillStyle = left ? 'rgb(255, 150, 0)' : 'rgb(150, 0, 255)';
+        ctx.fillStyle = 'rgb(255, 150, 0)';
 
         ctx.beginPath();
         ctx.arc(this.pos.x, this.pos.y, this.size, mouthOffset + rotationOffset, Math.PI + mouthOffset + rotationOffset);

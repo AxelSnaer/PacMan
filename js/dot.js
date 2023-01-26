@@ -2,7 +2,6 @@ class Dot extends GameObject {
     size = 5;
 
     onInit() {
-        this.name = 'dot';
         this.addCollider(this.size, this.size);
     }
 
