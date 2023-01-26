@@ -26,6 +26,10 @@ class Vector2 {
         return this.divide(len);
     }
 
+    normalized() {
+        return this.duplicate().normalize();
+    }
+
     length() {
         return Math.abs(Math.sqrt(this.x ** 2 + this.y ** 2));
     }

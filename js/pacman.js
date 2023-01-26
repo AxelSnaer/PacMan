@@ -4,6 +4,11 @@ class Pacman extends GameObject {
     size  = 10;
     speed = 1.5;
 
+    onInit() {
+        this.name = 'pacman';
+        this.addCollider(this.size, this.size);
+    }
+
     onUpdate() {
         this.pos.add(this.velocity);
 
@@ -16,11 +21,24 @@ class Pacman extends GameObject {
         });
     }
 
+    onCollision(other) {
+        console.log('Collided with: ' + other.name);
+        if (other.name === 'dot') {
+            Game.destroyGameObject(other);
+        }
+    }
+
     onDraw(ctx, frame) {
-        let rotationOffset = Math.atan2(this.velocity.y, this.velocity.x);
+        let heading = this.velocity.normalized();
+        let rotationOffset = Math.atan2(heading.y, heading.x);
         let mouthOffset = Math.PI * 2 * ((Math.cos(frame / 4) + 1) / 16);
 
-        ctx.fillStyle = 'rgb(255, 150, 0)';
+        let left = rotationOffset < -Math.PI * (1/2) || rotationOffset >= Math.PI * (1/2);
+        let eyeRotationOffset = left ? Math.PI * (1/3) : -Math.PI * (1/3);
+        let eyeDistanceOffset = this.size * (2/3);
+        let eyePositionOffset = new Vector2(Math.cos(rotationOffset + eyeRotationOffset), Math.sin(rotationOffset + eyeRotationOffset)).multiply(eyeDistanceOffset);
+
+        ctx.fillStyle = left ? 'rgb(255, 150, 0)' : 'rgb(150, 0, 255)';
 
         ctx.beginPath();
         ctx.arc(this.pos.x, this.pos.y, this.size, mouthOffset + rotationOffset, Math.PI + mouthOffset + rotationOffset);
@@ -28,6 +46,12 @@ class Pacman extends GameObject {
 
         ctx.beginPath();
         ctx.arc(this.pos.x, this.pos.y, this.size, Math.PI - mouthOffset + rotationOffset, Math.PI * 2 - mouthOffset + rotationOffset);
+        ctx.fill();
+
+        ctx.fillStyle = '#000000';
+
+        ctx.beginPath();
+        ctx.arc(this.pos.x + eyePositionOffset.x, this.pos.y + eyePositionOffset.y, this.size / 6, 0, 2 * Math.PI);
         ctx.fill();
     }
 
