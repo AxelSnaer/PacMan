@@ -1,8 +1,7 @@
 class Dot extends GameObject {
-    size = 5;
-
     onInit() {
-        this.addCollider(this.size, this.size);
+        this.size = 5;
+        this.addCollider(this.size * 2, this.size * 2);
     }
 
     onDraw(ctx, frame) {

@@ -1,11 +1,10 @@
 class PowerPellet extends GameObject {
-    size = 10;
-    
     onInit() {
-        this.addCollider(this.size, this.size);
+        this.size = 10;
+        this.addCollider(this.size * 2, this.size * 2);
     }
 
-    onDraw(ctx, frame) {
+    onDraw(ctx) {
         ctx.fillStyle = 'rgb(255, 255, 0)';
 
         ctx.beginPath();

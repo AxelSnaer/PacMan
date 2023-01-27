@@ -1,9 +1,16 @@
 const Game = {
-    objects: [],
     frame: 0,
+    time: 0,
+    deltaTime: 0,
+    width: 0,
+    height: 0,
     keyDown: {},
-
-    objectsToDestroy: [],
+    paused: false,
+    state: {}, // Public mutable state to keep track of global game information
+    
+    _objects: [],
+    _objectsToDestroy: [],
+    _oldTimeStamp: 0,
     
     init() {
         this.canvas = document.getElementById('canvas');
@@ -12,63 +19,102 @@ const Game = {
         this.width  = this.canvas.clientWidth;
         this.height = this.canvas.clientHeight;
         
-        document.addEventListener('keydown', this.onKeyDown.bind(this));
-        document.addEventListener('keyup', this.onKeyUp.bind(this));
+        document.addEventListener('keydown', this._onKeyDown.bind(this));
+        document.addEventListener('keyup', this._onKeyUp.bind(this));
 
-        this.update();
+        window.requestAnimationFrame(this._gameLoop.bind(this));
     },
 
-    update() {
-        this.objects.forEach(obj => obj.onUpdate());
-        this.objects.forEach(obj => obj.onLateUpdate());
+    newGameObject(type, x, y) {
+        this._objects.push(new type(x, y));
+    },
 
-        for (let i = 0; i < this.objects.length; i++) {
-            for (let j = i + 1; j < this.objects.length; j++) {
-                if (!this.objects[i].checkCollision(this.objects[j]))
+    destroyGameObject(object) {
+        this._objectsToDestroy.push(object);
+    },
+
+    save(name, value) {
+        localStorage[name] = value;
+    },
+
+    load(name) {
+        return localStorage[name];
+    },
+
+
+    _gameLoop(timeStamp) {
+        this._updateTime(timeStamp);
+
+        if (!this.paused)
+            this._update();
+        
+        this._render();
+
+        window.requestAnimationFrame(this._gameLoop.bind(this));
+    },
+
+    _updateTime(timeStamp) {
+        this.time = timeStamp / 1000;
+        this.deltaTime = this.time - this._oldTimeStamp;
+        this._oldTimeStamp = this.time;
+    },
+
+    _update() {
+        this._objects.forEach(obj => obj.onUpdate(this.deltaTime));
+
+        for (let i = 0; i < this._objects.length; i++) {
+            for (let j = i + 1; j < this._objects.length; j++) {
+                if (!this._objects[i].checkCollision(this._objects[j]))
                     continue;
                 
-                this.objects[i].onCollision(this.objects[j]);
-                this.objects[j].onCollision(this.objects[i]);
+                this._objects[i].onCollision(this._objects[j]);
+                this._objects[j].onCollision(this._objects[i]);
             }
+        }
+
+        this._objects.forEach(obj => obj.onLateUpdate(this.deltaTime));
+
+        this._render();
+    },
+
+    _render() {
+        if (this.width !== window.innerWidth || this.height !== window.innerHeight) {
+            this.canvas.width = window.innerWidth;
+            this.canvas.height = window.innerHeight;
+            this.width = window.innerWidth;
+            this.height = window.innerHeight;
+
+            this._objects.forEach(obj => obj.onResize(this.width, this.height));
         }
         
         this.ctx.fillStyle = '#000000';
         this.ctx.fillRect(0, 0, this.width, this.height);
 
-        this.objects.forEach(obj => obj.onDraw(this.ctx, this.frame));
-        this.objects.forEach(obj => obj.drawCollision(this.ctx, this.frame));
+        this._objects.forEach(obj => obj.onDraw(this.ctx));
+        this._objects.forEach(obj => obj.drawCollision(this.ctx));
 
-        this.destroyTaggedObjects();
+        this._destroyTaggedObjects();
 
         this.frame++;
-        window.requestAnimationFrame(this.update.bind(this));
     },
 
-    newGameObject(type, x, y) {
-        this.objects.push(new type(x, y));
+    _destroyTaggedObjects() {
+        this._objectsToDestroy.forEach(obj => this._objects.splice(this._objects.indexOf(obj), 1));
+        this._objectsToDestroy = [];
     },
 
-    destroyGameObject(object) {
-        this.objectsToDestroy.push(object);
-    },
-
-    destroyTaggedObjects() {
-        this.objectsToDestroy.forEach(obj => this.objects.splice(this.objects.indexOf(obj), 1));
-        this.objectsToDestroy = [];
-    },
-
-    onKeyDown(e) {
+    _onKeyDown(e) {
         if (this.keyDown[e.key] !== true) {
             this.keyDown[e.key] = true;
-            this.objects.forEach(obj => obj.onKeyDown(e.key));
+            this._objects.forEach(obj => obj.onKeyDown(e.key));
             return;
         }
         
         this.keyDown[e.key] = true;
     },
 
-    onKeyUp(e) {
+    _onKeyUp(e) {
         this.keyDown[e.key] = false;
-        this.objects.forEach(obj => obj.onKeyUp(e.key));
+        this._objects.forEach(obj => obj.onKeyUp(e.key));
     },
 };

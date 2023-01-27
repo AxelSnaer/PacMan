@@ -1,36 +1,52 @@
 class Pacman extends GameObject {
-    velocity = new Vector2(0, 0);
-
-    size  = 10;
-    speed = 1.5;
-
     onInit() {
+        this.velocity = new Vector2(0, 0);
+        this.size  = 10;
+        this.speed = 100;
+        this.powerUpDuration = 5;
+
         this.addCollider(this.size, this.size);
+        Game.state.lives = 3;
+        Game.state.score = 0;
+        Game.state.powerUp = false;
+        Game.state.powerUpTime = 0;
     }
 
-    onUpdate() {
-        this.pos.add(this.velocity);
+    onUpdate(delta) {
+        this.pos.add(this.velocity.duplicate().multiply(delta));
 
-        Game.objects.forEach(obj => {
-            if (!obj.isOfType(Dot))
-                return;
+        if (Game.state.powerUp && Game.time - Game.state.powerUpTime > this.powerUpDuration) {
+            Game.state.powerUp = false;
+        }
 
-            if (this.pos.dist(obj.pos) < obj.size * 2)
-                Game.destroyGameObject(obj);
-        });
+        if (this.pos.x - this.size < 0 || this.pos.x + this.size > Game.width)
+            this.velocity.set(-this.velocity.x, this.velocity.y);
+        if (this.pos.y - this.size < 0 || this.pos.y + this.size > Game.height)
+            this.velocity.set(this.velocity.x, -this.velocity.y);
     }
 
     onCollision(other) {
-        console.log('Collided with: ' + other.name);
-        if (other.name === 'dot') {
+        if (other.isOfType(Dot)) {
+            Game.state.score += 10;
             Game.destroyGameObject(other);
+        } else if (other.isOfType(PowerPellet)) {
+            Game.state.powerUp = true;
+            Game.state.powerUpTime = Game.time;
+            Game.destroyGameObject(other);
+        } else if (other.isOfType(Ghost)) {
+            if (Game.state.powerUp) {
+                Game.state.score += 100;
+                Game.destroyGameObject(other);
+            } else {
+                Game.paused = true;
+            }
         }
     }
 
-    onDraw(ctx, frame) {
+    onDraw(ctx) {
         let heading = this.velocity.normalized();
         let rotationOffset = Math.atan2(heading.y, heading.x);
-        let mouthOffset = Math.PI * 2 * ((Math.cos(frame / 4) + 1) / 16);
+        let mouthOffset = Math.PI * 2 * ((Math.cos(Game.frame / 4) + 1) / 16);
 
         let left = rotationOffset < -Math.PI * (1/2) || rotationOffset >= Math.PI * (1/2);
         let eyeRotationOffset = left ? Math.PI * (1/3) : -Math.PI * (1/3);
@@ -55,6 +71,9 @@ class Pacman extends GameObject {
     }
 
     onKeyDown(key) {
+        if (Game.paused)
+            return;
+
         let hoz  = Number(Game.keyDown['d'] === true) - Number(Game.keyDown['a'] === true);
         let vert = Number(Game.keyDown['s'] === true) - Number(Game.keyDown['w'] === true);
 
