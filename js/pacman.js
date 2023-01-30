@@ -32,6 +32,7 @@ class Pacman extends GameObject {
         } else if (other.isOfType(PowerPellet)) {
             Game.state.powerUp = true;
             Game.state.powerUpTime = Game.time;
+            Game.state.score += 50;
             Game.destroyGameObject(other);
         } else if (other.isOfType(Ghost)) {
             if (Game.state.powerUp) {
@@ -46,14 +47,14 @@ class Pacman extends GameObject {
     onDraw(ctx) {
         let heading = this.velocity.normalized();
         let rotationOffset = Math.atan2(heading.y, heading.x);
-        let mouthOffset = Math.PI * 2 * ((Math.cos(Game.frame / 4) + 1) / 16);
+        let mouthOffset = Math.PI * 2 * ((Math.cos(Game.frame / 8) + 1) / 16);
 
         let left = rotationOffset < -Math.PI * (1/2) || rotationOffset >= Math.PI * (1/2);
         let eyeRotationOffset = left ? Math.PI * (1/3) : -Math.PI * (1/3);
         let eyeDistanceOffset = this.size * (2/3);
         let eyePositionOffset = new Vector2(Math.cos(rotationOffset + eyeRotationOffset), Math.sin(rotationOffset + eyeRotationOffset)).multiply(eyeDistanceOffset);
 
-        ctx.fillStyle = 'rgb(255, 150, 0)';
+        ctx.fillStyle = 'rgb(255, 255, 0)';
 
         ctx.beginPath();
         ctx.arc(this.pos.x, this.pos.y, this.size, mouthOffset + rotationOffset, Math.PI + mouthOffset + rotationOffset);

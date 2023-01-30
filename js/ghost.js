@@ -40,16 +40,27 @@ class Ghost extends GameObject {
         ctx.closePath();
         ctx.fill();
 
-        ctx.fillStyle = '#000000';
-
+        
         let eyeOffset = this.dir.normalized().multiply(this.size / 8);
-
+        
+        ctx.fillStyle = '#ffffff';
+        
         ctx.beginPath();
-        ctx.arc(this.pos.x + eyeOffset.x - this.size / 4, this.pos.y + eyeOffset.y - this.size / 2, this.size / 8, 0, 2 * Math.PI);
+        ctx.arc(this.pos.x + eyeOffset.x - this.size / 4, this.pos.y + eyeOffset.y - this.size / 2, this.size / 6, 0, 2 * Math.PI);
         ctx.fill();
 
         ctx.beginPath();
-        ctx.arc(this.pos.x + eyeOffset.x + this.size / 4, this.pos.y + eyeOffset.y - this.size / 2, this.size / 8, 0, 2 * Math.PI);
+        ctx.arc(this.pos.x + eyeOffset.x + this.size / 4, this.pos.y + eyeOffset.y - this.size / 2, this.size / 6, 0, 2 * Math.PI);
+        ctx.fill();
+
+        ctx.fillStyle = '#0000aa';
+
+        ctx.beginPath();
+        ctx.arc(this.pos.x + eyeOffset.x * 1.2 - this.size / 4, this.pos.y + eyeOffset.y * 1.2 - this.size / 2, this.size / 10, 0, 2 * Math.PI);
+        ctx.fill();
+
+        ctx.beginPath();
+        ctx.arc(this.pos.x + eyeOffset.x * 1.2 + this.size / 4, this.pos.y + eyeOffset.y * 1.2 - this.size / 2, this.size / 10, 0, 2 * Math.PI);
         ctx.fill();
     }
 }

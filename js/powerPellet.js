@@ -5,10 +5,11 @@ class PowerPellet extends GameObject {
     }
 
     onDraw(ctx) {
-        ctx.fillStyle = 'rgb(255, 255, 0)';
+        let cornerSize = 2;
 
-        ctx.beginPath();
-        ctx.arc(this.pos.x, this.pos.y, this.size, 0, Math.PI * 2);
-        ctx.fill();
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(this.pos.x - this.size / 2, this.pos.y - this.size / 2 + cornerSize, this.size, this.size - cornerSize * 2);
+        ctx.fillRect(this.pos.x - this.size / 2 + cornerSize, this.pos.y - this.size / 2, this.size - cornerSize * 2, this.size);
+        
     }
 }
