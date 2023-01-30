@@ -7,8 +7,12 @@ def main():
     parser.add_argument("output", help = "the output file")
     args = parser.parse_args()
 
-    build = SingleFileParser()
-    output = build.parse(args.template)
+    try:
+        build = SingleFileParser()
+        output = build.parse(args.template)
+    except FileNotFoundError as e:
+        print("parse failed: file not found: ", e.filename)
+        return
 
     print(f"parse complete. outputting to '{args.output}'")
     with open(args.output, "w") as f:
