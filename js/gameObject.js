@@ -1,6 +1,6 @@
 class GameObject {
-    constructor(x, y, name) {
-        this.pos = new Vector2(x || 0, y || 0);
+    constructor(x, y) {
+        this.pos = new Vector2(x ?? 0, y ?? 0);
         this.classId = new.target.name;
 
         this.collider = null;
