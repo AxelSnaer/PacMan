@@ -26,21 +26,15 @@ class Pacman extends GameObject {
     }
 
     onCollision(other) {
-        if (other.isOfType(Dot)) {
-            Game.state.score += 10;
+        if (!other.isOfType(Ghost))
+            return;
+
+        if (Game.state.powerUp) {
+            Game.state.score += 100;
             Game.level.destroyGameObject(other);
-        } else if (other.isOfType(PowerPellet)) {
-            Game.state.powerUp = true;
-            Game.state.powerUpTime = Game.time;
-            Game.state.score += 50;
-            Game.level.destroyGameObject(other);
-        } else if (other.isOfType(Ghost)) {
-            if (Game.state.powerUp) {
-                Game.state.score += 100;
-                Game.level.destroyGameObject(other);
-            } else {
-                Game.paused = true;
-            }
+        } else {
+            Game.state.lives--;
+            window.navigator.vibrate(200);
         }
     }
 

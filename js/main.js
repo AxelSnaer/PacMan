@@ -1,12 +1,15 @@
 //#include math.js
+
 //#include gameObject.js
+//#include level.js
+//#include game.js
+
 //#include obstacle.js
 //#include ghost.js
 //#include dot.js
 //#include powerPellet.js
 //#include pacman.js
-//#include game.js
-//#include level.js
+//#include levels/mainLevel.js
 
 function start() {
     Game.init();
