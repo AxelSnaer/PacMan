@@ -12,7 +12,7 @@ class Ghost extends GameObject {
         if (!this.move)
             return;
 
-        //this.pos.add(this.dir.normalized().multiply(delta).multiply(this.speed))
+        this.pos.add(this.dir.normalized().multiply(delta).multiply(this.speed));
         
         if (this.pos.x - this.size / 2 < 0 || this.pos.x + this.size / 2 > Game.width)
             this.dir.set(-this.dir.x, this.dir.y);

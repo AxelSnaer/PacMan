@@ -69,6 +69,7 @@ const Game = {
         this.time = timeStamp / 1000;
         this.deltaTime = this.time - this._oldTimeStamp;
         this._oldTimeStamp = this.time;
+        this.framerate = 1 / this.deltaTime;
     },
 
     _onKeyDown(e) {

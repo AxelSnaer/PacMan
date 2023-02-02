@@ -13,7 +13,7 @@ class Pacman extends GameObject {
     }
 
     onUpdate(delta) {
-        //this.pos.add(this.velocity.duplicate().multiply(delta));
+        this.pos.add(this.velocity.duplicate().multiply(delta));
 
         if (Game.state.powerUp && Game.time - Game.state.powerUpTime > this.powerUpDuration) {
             Game.state.powerUp = false;
@@ -41,7 +41,7 @@ class Pacman extends GameObject {
     onDraw(ctx) {
         let heading = this.velocity.normalized();
         let rotationOffset = Math.atan2(heading.y, heading.x);
-        let mouthOffset = Math.PI * 2 * ((Math.cos(Game.frame / 8) + 1) / 16);
+        let mouthOffset = Math.PI * 2 * ((Math.cos(Game.time * 16) + 1) / 16);
 
         let left = rotationOffset < -Math.PI * (1/2) || rotationOffset >= Math.PI * (1/2);
         let eyeRotationOffset = left ? Math.PI * (1/3) : -Math.PI * (1/3);

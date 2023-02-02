@@ -8,7 +8,7 @@ class Level {
 
     _update(delta) {
         this.onUpdate(delta);
-        this._objects.forEach(obj => obj.onUpdate(this.deltaTime));
+        this._objects.forEach(obj => obj.onUpdate(delta));
 
         for (let i = 0; i < this._objects.length; i++) {
             for (let j = i + 1; j < this._objects.length; j++) {
