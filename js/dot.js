@@ -6,7 +6,7 @@ class Dot extends GameObject {
 
     onDraw(ctx, frame) {
         ctx.fillStyle = '#ffffff';
-        ctx.fillRect(this.pos.x - this.size / 2, this.pos.y - this.size / 2, this.size, this.size);
+        ctx.fillRect(-this.size / 2, -this.size / 2, this.size, this.size);
     }
 
     onCollision(other) {

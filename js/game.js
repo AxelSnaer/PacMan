@@ -55,6 +55,7 @@ const Game = {
         if (!this.paused)
             this.level?._update(this.deltaTime);
         
+        this._ctx.setTransform(1, 0, 0, 1, 0, 0);
         this._ctx.fillStyle = '#000000';
         this._ctx.fillRect(0, 0, this.width, this.height);
 

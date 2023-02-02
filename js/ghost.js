@@ -12,7 +12,7 @@ class Ghost extends GameObject {
         if (!this.move)
             return;
 
-        this.pos.add(this.dir.normalized().multiply(delta).multiply(this.speed))
+        //this.pos.add(this.dir.normalized().multiply(delta).multiply(this.speed))
         
         if (this.pos.x - this.size / 2 < 0 || this.pos.x + this.size / 2 > Game.width)
             this.dir.set(-this.dir.x, this.dir.y);
@@ -24,19 +24,19 @@ class Ghost extends GameObject {
         ctx.fillStyle = Game.state.powerUp ? 'rgb(255, 255, 255)' : this.color;
 
         ctx.beginPath();
-        ctx.arc(this.pos.x, this.pos.y - this.size / 2, this.size / 2, 0, Math.PI, true);
-        ctx.moveTo(this.pos.x - this.size / 2, this.pos.y - this.size / 2);
-        ctx.lineTo(this.pos.x + this.size / 2, this.pos.y - this.size / 2);
-        ctx.lineTo(this.pos.x + this.size / 2, this.pos.y + this.size / 2);
+        ctx.arc(0, -this.size / 2,  this.size / 2, 0, Math.PI, true);
+        ctx.moveTo(-this.size / 2, -this.size / 2);
+        ctx.lineTo( this.size / 2, -this.size / 2);
+        ctx.lineTo( this.size / 2,  this.size / 2);
 
         const squiggleCount = 6;
         const squiggleDepth = 4;
 
         for (let i = 0; i < squiggleCount; i++) {
-            ctx.lineTo(this.pos.x + this.size / 2 - (i * this.size) / squiggleCount, this.pos.y + this.size / 2 - (i % 2) * squiggleDepth);
+            ctx.lineTo(this.size / 2 - (i * this.size) / squiggleCount, this.size / 2 - (i % 2) * squiggleDepth);
         }
 
-        ctx.lineTo(this.pos.x - this.size / 2, this.pos.y + this.size / 2);
+        ctx.lineTo(-this.size / 2, this.size / 2);
         ctx.closePath();
         ctx.fill();
 
@@ -46,21 +46,21 @@ class Ghost extends GameObject {
         ctx.fillStyle = '#ffffff';
         
         ctx.beginPath();
-        ctx.arc(this.pos.x + eyeOffset.x - this.size / 4, this.pos.y + eyeOffset.y - this.size / 2, this.size / 6, 0, 2 * Math.PI);
+        ctx.arc(eyeOffset.x - this.size / 4, eyeOffset.y - this.size / 2, this.size / 6, 0, 2 * Math.PI);
         ctx.fill();
 
         ctx.beginPath();
-        ctx.arc(this.pos.x + eyeOffset.x + this.size / 4, this.pos.y + eyeOffset.y - this.size / 2, this.size / 6, 0, 2 * Math.PI);
+        ctx.arc(eyeOffset.x + this.size / 4, eyeOffset.y - this.size / 2, this.size / 6, 0, 2 * Math.PI);
         ctx.fill();
 
         ctx.fillStyle = '#0000aa';
 
         ctx.beginPath();
-        ctx.arc(this.pos.x + eyeOffset.x * 1.2 - this.size / 4, this.pos.y + eyeOffset.y * 1.2 - this.size / 2, this.size / 10, 0, 2 * Math.PI);
+        ctx.arc(eyeOffset.x * 1.2 - this.size / 4, eyeOffset.y * 1.2 - this.size / 2, this.size / 10, 0, 2 * Math.PI);
         ctx.fill();
 
         ctx.beginPath();
-        ctx.arc(this.pos.x + eyeOffset.x * 1.2 + this.size / 4, this.pos.y + eyeOffset.y * 1.2 - this.size / 2, this.size / 10, 0, 2 * Math.PI);
+        ctx.arc(eyeOffset.x * 1.2 + this.size / 4, eyeOffset.y * 1.2 - this.size / 2, this.size / 10, 0, 2 * Math.PI);
         ctx.fill();
     }
 }

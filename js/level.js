@@ -26,9 +26,10 @@ class Level {
     }
 
     _draw(ctx) {
-        this._objects.forEach(obj => obj.onDraw(ctx));
-        this._objects.forEach(obj => obj.drawCollision(ctx));
+        this._objects.forEach(obj => obj._draw(ctx));
+        this._objects.forEach(obj => obj._drawCollision(ctx));
 
+        ctx.setTransform(1, 0, 0, 1, 0, 0);
         this.onDrawUI(ctx);
     }
 

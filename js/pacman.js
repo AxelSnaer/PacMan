@@ -13,7 +13,7 @@ class Pacman extends GameObject {
     }
 
     onUpdate(delta) {
-        this.pos.add(this.velocity.duplicate().multiply(delta));
+        //this.pos.add(this.velocity.duplicate().multiply(delta));
 
         if (Game.state.powerUp && Game.time - Game.state.powerUpTime > this.powerUpDuration) {
             Game.state.powerUp = false;
@@ -51,17 +51,17 @@ class Pacman extends GameObject {
         ctx.fillStyle = 'rgb(255, 255, 0)';
 
         ctx.beginPath();
-        ctx.arc(this.pos.x, this.pos.y, this.size, mouthOffset + rotationOffset, Math.PI + mouthOffset + rotationOffset);
+        ctx.arc(0, 0, this.size, mouthOffset + rotationOffset, Math.PI + mouthOffset + rotationOffset);
         ctx.fill();
 
         ctx.beginPath();
-        ctx.arc(this.pos.x, this.pos.y, this.size, Math.PI - mouthOffset + rotationOffset, Math.PI * 2 - mouthOffset + rotationOffset);
+        ctx.arc(0, 0, this.size, Math.PI - mouthOffset + rotationOffset, Math.PI * 2 - mouthOffset + rotationOffset);
         ctx.fill();
 
         ctx.fillStyle = '#000000';
 
         ctx.beginPath();
-        ctx.arc(this.pos.x + eyePositionOffset.x, this.pos.y + eyePositionOffset.y, this.size / 6, 0, 2 * Math.PI);
+        ctx.arc(eyePositionOffset.x, eyePositionOffset.y, this.size / 6, 0, 2 * Math.PI);
         ctx.fill();
     }
 

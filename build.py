@@ -6,12 +6,12 @@ def main():
     parser.add_argument("template", help = "the HTML file to be used for the template")
     parser.add_argument("output", help = "the output file")
     args = parser.parse_args()
+    build = SingleFileBuilder()
 
     try:
-        build = SingleFileParser()
         output = build.parse(args.template)
-    except FileNotFoundError as e:
-        print("parse failed: file not found: ", e.filename)
+    except Exception as e:
+        print("parse failed: ", str(e))
         return
 
     print(f"parse complete. outputting to '{args.output}'")
@@ -19,7 +19,7 @@ def main():
         f.write(output)
 
 
-class SingleFileParser:
+class SingleFileBuilder:
     def parse(self, template_file):
         self.output = ""
         self.working_dir = ""
@@ -30,7 +30,7 @@ class SingleFileParser:
     def parse_template(self, path):
         print(f"parsing '{os.path.normpath(os.path.join(self.working_dir, path))}'")
         
-        wd = self.working_dir
+        prev_working_dir = self.working_dir
         lines = self.read_lines(path)
         self.working_dir = os.path.dirname(path)
 
@@ -48,7 +48,7 @@ class SingleFileParser:
             
             self.output += line
 
-        self.working_dir = wd
+        self.working_dir = prev_working_dir
 
     def parse_template_command(self, command, args):
         match command:

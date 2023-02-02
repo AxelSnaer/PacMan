@@ -7,6 +7,7 @@
 //#include obstacle.js
 //#include ghost.js
 //#include dot.js
+//#include cherry.js
 //#include powerPellet.js
 //#include pacman.js
 //#include levels/mainLevel.js

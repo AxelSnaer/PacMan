@@ -35,7 +35,13 @@ class GameObject {
             s1.x + p1.y > p2.y;
     }
 
-    drawCollision(ctx) {
+    _draw(ctx) {
+        ctx.setTransform(1, 0, 0, 1, 0, 0);
+        ctx.translate(this.pos.x, this.pos.y);
+        this.onDraw(ctx);
+    }
+
+    _drawCollision(ctx) {
         if (!this.collider || !this.drawCollider)
             return;
 
