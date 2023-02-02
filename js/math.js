@@ -3,8 +3,8 @@ class Vector2 {
     y = 0;
 
     constructor(x, y) {
-        this.x = x || 0;
-        this.y = y || 0;
+        this.x = x ?? 0;
+        this.y = y ?? 0;
     }
 
     duplicate() {
