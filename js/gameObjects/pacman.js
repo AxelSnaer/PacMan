@@ -4,7 +4,9 @@ class Pacman extends GameObject {
         this.size  = 10;
         this.speed = 100;
         this.powerUpDuration = 5;
+        this.invincibilityFrameDuration = 1;
         this.invincibilityFrames = new Stopwatch();
+        this.deathTimer = new Stopwatch();
 
         this.addCollider(this.size, this.size);
         Game.state.lives = 3;
@@ -13,15 +15,27 @@ class Pacman extends GameObject {
     }
 
     onUpdate(delta) {
+        if (this.deathTimer.isActive()) {
+            if (this.deathTimer.elapsed() > 1) {
+                Game.loadLevel(GameOverLevel);
+            }
+            
+            return;
+        }
+
         this.pos.add(this.velocity.duplicate().multiply(delta));
 
         if (Game.state.powerUp.elapsed() > this.powerUpDuration) {
             Game.state.powerUp.stopTimer();
         }
 
-        if (this.pos.x - this.size < 0 || this.pos.x + this.size > Game.width)
+        if (this.invincibilityFrames.elapsed() > this.invincibilityFrameDuration) {
+            this.invincibilityFrames.stopTimer();
+        }
+
+        if (this.pos.x - this.size < -Game.width / 2 || this.pos.x + this.size > Game.width / 2)
             this.velocity.set(-this.velocity.x, this.velocity.y);
-        if (this.pos.y - this.size < 0 || this.pos.y + this.size > Game.height)
+        if (this.pos.y - this.size < -Game.height / 2 || this.pos.y + this.size > Game.height / 2)
             this.velocity.set(this.velocity.x, -this.velocity.y);
     }
 
@@ -32,17 +46,21 @@ class Pacman extends GameObject {
         if (Game.state.powerUp.isActive()) {
             Game.state.score += 100;
             Game.level.destroyGameObject(other);
-        } else {
+        } else if (!this.invincibilityFrames.isActive()) {
             Game.state.lives--;
             window.navigator.vibrate(200);
+            this.invincibilityFrames.startTimer();
 
             if (Game.state.lives === 0) {
-                Game.loadLevel(GameOverLevel);
+                this.deathTimer.startTimer();
             }
         }
     }
 
     onDraw(ctx) {
+        if (this.invincibilityFrames.isActive() && Math.floor(this.invincibilityFrames.elapsed() * 8) % 2 === 0)
+            return;
+
         let heading = this.velocity.normalized();
         let rotationOffset = Math.atan2(heading.y, heading.x);
         let mouthOffset = Math.PI * 2 * ((Math.cos(Game.time * 16) + 1) / 16);
@@ -52,7 +70,7 @@ class Pacman extends GameObject {
         let eyeDistanceOffset = this.size * (2/3);
         let eyePositionOffset = new Vector2(Math.cos(rotationOffset + eyeRotationOffset), Math.sin(rotationOffset + eyeRotationOffset)).multiply(eyeDistanceOffset);
 
-        ctx.fillStyle = 'rgb(255, 255, 0)';
+        ctx.fillStyle = '#ffff00';
 
         ctx.beginPath();
         ctx.arc(0, 0, this.size, mouthOffset + rotationOffset, Math.PI + mouthOffset + rotationOffset);

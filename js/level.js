@@ -26,10 +26,18 @@ class Level {
     }
 
     _draw(ctx) {
-        this._objects.forEach(obj => obj._draw(ctx));
+        this._objects.forEach(obj => {
+            ctx.setTransform(1, 0, 0, 1, 0, 0);
+            ctx.translate(Game.width / 2, Game.height / 2);
+            obj._draw(ctx)
+        });
 
         if (Game.showColliders)
-            this._objects.forEach(obj => obj._drawCollision(ctx));
+            this._objects.forEach(obj => {
+                ctx.setTransform(1, 0, 0, 1, 0, 0);
+                ctx.translate(Game.width / 2, Game.height / 2);
+                obj._drawCollision(ctx)
+            });
 
         ctx.setTransform(1, 0, 0, 1, 0, 0);
         this.onDrawUI(ctx);
@@ -55,8 +63,8 @@ class Level {
         this._objects.forEach(obj => obj.onKeyUp(key));
     }
 
-    newGameObject(type, x, y) {
-        let obj = new type(x, y);
+    newGameObject(type, x, y, ...args) {
+        let obj = new type(x, y, ...args);
         this._objects.push(obj);
         return this._objects[this._objects.length - 1];
     }

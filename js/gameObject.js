@@ -1,11 +1,11 @@
 class GameObject {
-    constructor(x, y) {
+    constructor(x, y, ...args) {
         this.pos = new Vector2(x, y);
         this.classId = new.target.name;
 
         this.collider = null;
 
-        this.onInit();
+        this.onInit(...args);
     }
 
     isOfType(type) {
@@ -35,7 +35,6 @@ class GameObject {
     }
 
     _draw(ctx) {
-        ctx.setTransform(1, 0, 0, 1, 0, 0);
         ctx.translate(this.pos.x, this.pos.y);
         this.onDraw(ctx);
     }
@@ -44,7 +43,6 @@ class GameObject {
         if (!this.collider)
             return;
 
-        ctx.setTransform(1, 0, 0, 1, 0, 0);
         ctx.translate(this.pos.x + this.collider.offset.x, this.pos.y + this.collider.offset.y);
 
         ctx.strokeStyle = 'rgba(255, 100, 100, 1)';

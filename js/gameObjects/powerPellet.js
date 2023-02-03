@@ -13,6 +13,9 @@ class PowerPellet extends GameObject {
     }
 
     onCollision(other) {
+        if (other.isOfType(Dot))
+            Game.level.destroyGameObject(other);
+
         if (!other.isOfType(Pacman))
             return;
 

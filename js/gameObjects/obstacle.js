@@ -1,14 +1,14 @@
 class Obstacle extends GameObject {
-    onInit() {
-        this.width = 20;
-        this.height = 80;
+    onInit(width, height) {
+        this.width = width ?? 20;
+        this.height = height ?? 20;
 
         this.addCollider(this.width, this.height);
     }
 
     onCollision(other) {
-        if (other.isOfType(Pacman) || other.isOfType(Ghost)) {
-            other.velocity.multiply(-1);
+        if (other.isOfType(Dot)) {
+            Game.level.destroyGameObject(other);
         }
     }
 

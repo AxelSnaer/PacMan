@@ -14,9 +14,9 @@ class Ghost extends GameObject {
 
         this.pos.add(this.velocity.normalized().multiply(delta).multiply(this.speed));
         
-        if (this.pos.x - this.size / 2 < 0 || this.pos.x + this.size / 2 > Game.width)
+        if (this.pos.x - this.size / 2 < -Game.width / 2 || this.pos.x + this.size / 2 > Game.width / 2)
             this.velocity.set(-this.velocity.x, this.velocity.y);
-        if (this.pos.y - this.size < 0 || this.pos.y + this.size > Game.height)
+        if (this.pos.y - this.size < -Game.height || this.pos.y + this.size > Game.height / 2)
             this.velocity.set(this.velocity.x, -this.velocity.y);
     }
 
