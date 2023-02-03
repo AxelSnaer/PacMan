@@ -16,8 +16,7 @@ class PowerPellet extends GameObject {
         if (!other.isOfType(Pacman))
             return;
 
-        Game.state.powerUp = true;
-        Game.state.powerUpTime = Game.time;
+        Game.state.powerUp.startTimer();
         Game.state.score += 50;
         Game.level.destroyGameObject(this);
     }

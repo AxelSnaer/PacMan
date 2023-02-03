@@ -4,19 +4,19 @@ class Pacman extends GameObject {
         this.size  = 10;
         this.speed = 100;
         this.powerUpDuration = 5;
+        this.invincibilityFrames = new Stopwatch();
 
         this.addCollider(this.size, this.size);
         Game.state.lives = 3;
         Game.state.score = 0;
-        Game.state.powerUp = false;
-        Game.state.powerUpTime = 0;
+        Game.state.powerUp = new Stopwatch();
     }
 
     onUpdate(delta) {
         this.pos.add(this.velocity.duplicate().multiply(delta));
 
-        if (Game.state.powerUp && Game.time - Game.state.powerUpTime > this.powerUpDuration) {
-            Game.state.powerUp = false;
+        if (Game.state.powerUp.elapsed() > this.powerUpDuration) {
+            Game.state.powerUp.stopTimer();
         }
 
         if (this.pos.x - this.size < 0 || this.pos.x + this.size > Game.width)
@@ -29,12 +29,16 @@ class Pacman extends GameObject {
         if (!other.isOfType(Ghost))
             return;
 
-        if (Game.state.powerUp) {
+        if (Game.state.powerUp.isActive()) {
             Game.state.score += 100;
             Game.level.destroyGameObject(other);
         } else {
             Game.state.lives--;
             window.navigator.vibrate(200);
+
+            if (Game.state.lives === 0) {
+                Game.loadLevel(GameOverLevel);
+            }
         }
     }
 

@@ -3,7 +3,7 @@ class Ghost extends GameObject {
         this.color = '#00ccff';
         this.size = 20;
         this.speed = 40;
-        this.dir = new Vector2(1, 1);
+        this.velocity = new Vector2(1, 1);
         this.move = true;
         this.addCollider(this.size, this.size * 2);
     }
@@ -12,16 +12,21 @@ class Ghost extends GameObject {
         if (!this.move)
             return;
 
-        this.pos.add(this.dir.normalized().multiply(delta).multiply(this.speed));
+        this.pos.add(this.velocity.normalized().multiply(delta).multiply(this.speed));
         
         if (this.pos.x - this.size / 2 < 0 || this.pos.x + this.size / 2 > Game.width)
-            this.dir.set(-this.dir.x, this.dir.y);
+            this.velocity.set(-this.velocity.x, this.velocity.y);
         if (this.pos.y - this.size < 0 || this.pos.y + this.size > Game.height)
-            this.dir.set(this.dir.x, -this.dir.y);
+            this.velocity.set(this.velocity.x, -this.velocity.y);
     }
 
     onDraw(ctx) {
-        ctx.fillStyle = Game.state.powerUp ? 'rgb(255, 255, 255)' : this.color;
+        ctx.fillStyle = this.color;
+
+        if (Game.state.powerUp.isActive()) {
+            ctx.fillStyle = Math.floor(Game.state.powerUp.elapsed() * 8) % 2 === 0
+                ? '#ffffff' : '#0000ff';
+        }
 
         ctx.beginPath();
         ctx.arc(0, -this.size / 2,  this.size / 2, 0, Math.PI, true);
@@ -41,7 +46,7 @@ class Ghost extends GameObject {
         ctx.fill();
 
         
-        let eyeOffset = this.dir.normalized().multiply(this.size / 8);
+        let eyeOffset = this.velocity.normalized().multiply(this.size / 8);
         
         ctx.fillStyle = '#ffffff';
         

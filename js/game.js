@@ -8,6 +8,7 @@ const Game = {
     paused: false,
     state: {}, // Public mutable state to keep track of global game information
     level: null,
+    showColliders: false,
     
     _oldTimeStamp: 0,
     _canvas: null,
@@ -76,6 +77,11 @@ const Game = {
         if (this.keyDown[e.key] !== true) {
             this.keyDown[e.key] = true;
             this.level._keyDown(e.key);
+
+            if (e.key === 'F2') {
+                this.showColliders = !this.showColliders;
+            }
+
             return;
         }
         

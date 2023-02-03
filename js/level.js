@@ -27,7 +27,9 @@ class Level {
 
     _draw(ctx) {
         this._objects.forEach(obj => obj._draw(ctx));
-        this._objects.forEach(obj => obj._drawCollision(ctx));
+
+        if (Game.showColliders)
+            this._objects.forEach(obj => obj._drawCollision(ctx));
 
         ctx.setTransform(1, 0, 0, 1, 0, 0);
         this.onDrawUI(ctx);
@@ -44,10 +46,12 @@ class Level {
     }
 
     _keyDown(key) {
+        this.onKeyDown(key);
         this._objects.forEach(obj => obj.onKeyDown(key));
     }
 
     _keyUp(key) {
+        this.onKeyUp(key);
         this._objects.forEach(obj => obj.onKeyUp(key));
     }
 
@@ -67,4 +71,6 @@ class Level {
     onUpdate(delta) {}
     onDrawUI(ctx) {}
     onCleanup() {}
+    onKeyDown(key) {}
+    onKeyUp(key) {}
 }

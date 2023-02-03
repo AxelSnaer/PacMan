@@ -1,16 +1,20 @@
-//#include math.js
+//#include utilities/math.js
+//#include utilities/graphics.js
+//#include utilities/stopwatch.js
 
 //#include gameObject.js
 //#include level.js
 //#include game.js
 
-//#include obstacle.js
-//#include ghost.js
-//#include dot.js
-//#include cherry.js
-//#include powerPellet.js
-//#include pacman.js
+//#include gameObjects/obstacle.js
+//#include gameObjects/ghost.js
+//#include gameObjects/dot.js
+//#include gameObjects/cherry.js
+//#include gameObjects/powerPellet.js
+//#include gameObjects/pacman.js
+//#include levels/startLevel.js
 //#include levels/mainLevel.js
+//#include levels/gameOverLevel.js
 
 function start() {
     Game.init();

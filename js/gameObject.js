@@ -4,7 +4,6 @@ class GameObject {
         this.classId = new.target.name;
 
         this.collider = null;
-        this.drawCollider = false;
 
         this.onInit();
     }
@@ -42,20 +41,23 @@ class GameObject {
     }
 
     _drawCollision(ctx) {
-        if (!this.collider || !this.drawCollider)
+        if (!this.collider)
             return;
+
+        ctx.setTransform(1, 0, 0, 1, 0, 0);
+        ctx.translate(this.pos.x + this.collider.offset.x, this.pos.y + this.collider.offset.y);
 
         ctx.strokeStyle = 'rgba(255, 100, 100, 1)';
         ctx.fillStyle = 'rgba(255, 100, 100, 0.5)';
         ctx.fillRect(
-            this.pos.x + this.collider.offset.x - this.collider.size.x / 2,
-            this.pos.y + this.collider.offset.y - this.collider.size.y / 2,
+            -this.collider.size.x / 2,
+            -this.collider.size.y / 2,
             this.collider.size.x,
             this.collider.size.y
         );
         ctx.strokeRect(
-            this.pos.x + this.collider.offset.x - this.collider.size.x / 2,
-            this.pos.y + this.collider.offset.y - this.collider.size.y / 2,
+            -this.collider.size.x / 2,
+            -this.collider.size.y / 2,
             this.collider.size.x,
             this.collider.size.y
         );
