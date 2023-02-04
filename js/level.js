@@ -72,6 +72,16 @@ class Level {
     destroyGameObject(object) {
         this._objectsToDestroy.push(object);
     }
+
+    findGameObjectsOfType(type) {
+        let objs = [];
+        this._objects.forEach(obj => {
+            if (obj.isOfType(type))
+                objs.push(obj);
+        });
+
+        return objs;
+    }
     
     
     onResize(width, height) {}

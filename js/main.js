@@ -15,6 +15,7 @@
 //#include levels/startLevel.js
 //#include levels/mainLevel.js
 //#include levels/gameOverLevel.js
+//#include levels/winLevel.js
 
 function start() {
     Game.init();

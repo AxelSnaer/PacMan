@@ -78,6 +78,13 @@ const Game = {
             this.keyDown[e.key] = true;
             this.level._keyDown(e.key);
 
+            if (e.key === 'f') {
+                if (document.fullscreenElement) {
+                    document.exitFullscreen();
+                } else {
+                    document.body.requestFullscreen();
+                }
+            }
             if (e.key === 'F2') {
                 this.showColliders = !this.showColliders;
             }

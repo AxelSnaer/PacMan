@@ -39,6 +39,18 @@ class Pacman extends GameObject {
             this.velocity.set(this.velocity.x, -this.velocity.y);
     }
 
+    onLateUpdate() {
+        if (this.deathTimer.isActive())
+            return;
+
+        let dots = Game.level.findGameObjectsOfType(Dot);
+        let pellets = Game.level.findGameObjectsOfType(PowerPellet);
+
+        if (dots.length + pellets.length === 0) {
+            Game.loadLevel(WinLevel);
+        }
+    }
+
     onCollision(other) {
         if (!other.isOfType(Ghost))
             return;

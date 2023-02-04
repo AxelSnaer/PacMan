@@ -14,8 +14,8 @@ class MainLevel extends Level {
         this.newGameObject(Obstacle,  0,   -150, 275, 20);
         this.newGameObject(Obstacle,  0,    150, 275, 20);
 
-        this.newGameObject(Obstacle, -75, 0, 20, 125);
-        this.newGameObject(Obstacle,  75, 0, 20, 125);
+        this.newGameObject(Obstacle, -75, 0, 20, 175);
+        this.newGameObject(Obstacle,  75, 0, 20, 175);
 
         this.newGameObject(Obstacle,  0, -100, 20, 75);
         this.newGameObject(Obstacle,  0, 100, 20, 75);
