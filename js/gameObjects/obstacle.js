@@ -7,12 +7,15 @@ class Obstacle extends GameObject {
     }
 
     onCollision(other) {
+        // If the obstacle is on top of a dot, then destroy the dot
         if (other.isOfType(Dot)) {
             Game.level.destroyGameObject(other);
         }
     }
 
     onDraw(ctx) {
+        // Draw the collider
+
         let cornerSize = 3;
         
         ctx.fillStyle = '#0033ff';

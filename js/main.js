@@ -19,9 +19,11 @@
 //#include levels/gameOverLevel.js
 //#include levels/winLevel.js
 
+// Initializes the game and load a level
 function start() {
     Game.init();
     Game.loadLevel(StartLevel);
 }
 
+// Call the start function once everything has loaded in
 document.addEventListener('DOMContentLoaded', start);

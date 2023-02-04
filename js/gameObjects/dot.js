@@ -10,6 +10,8 @@ class Dot extends GameObject {
     }
 
     onCollision(other) {
+        // If the player collides with the dot, increase the score and destroy the dot
+
         if (!other.isOfType(Pacman))
             return;
 

@@ -14,29 +14,35 @@ class Ghost extends Rigidbody {
         if (!this.move)
             return;
 
+        // Update the rigidbody
         super.onUpdate(delta);
     }
 
     onDraw(ctx) {
+        // Draw the ghost
         this.drawMainShape(ctx);
         this.drawEyes(ctx);
     }
 
     drawMainShape(ctx) {
+        // Get the ghost's color and set it as the fill color
         let color = this.getColor();
         ctx.fillStyle = color;
 
+        // If the player has a powerup, then switch between two colors to make the ghost blink
         if (Game.state.powerUp.isActive()) {
             ctx.fillStyle = Math.floor(Game.state.powerUp.elapsed() * 8) % 2 === 0
                 ? '#ffffff' : '#0000ff';
         }
 
+        // Draw the main shape
         ctx.beginPath();
         ctx.arc(0, -this.size / 2,  this.size / 2, 0, Math.PI, true);
         ctx.moveTo(-this.size / 2, -this.size / 2);
         ctx.lineTo( this.size / 2, -this.size / 2);
         ctx.lineTo( this.size / 2,  this.size / 2);
 
+        // Draw the squiggles
         const squiggleCount = 6;
         const squiggleDepth = 4;
 
@@ -50,8 +56,10 @@ class Ghost extends Rigidbody {
     }
 
     drawEyes(ctx) {
+        // Calculate an offset for the eyes so they look in the direction the ghost moves in
         let eyeOffset = this.velocity.normalized().multiply(this.size / 8);
         
+        // Draw the eyes
         ctx.fillStyle = '#ffffff';
         
         ctx.beginPath();
@@ -74,6 +82,7 @@ class Ghost extends Rigidbody {
     }
 
     getColor() {
+        // Returns the color the ghost should be based on it's type
         switch (this.type) {
             case 'blinky': return '#ff0000';
             case 'pinky':  return '#ff0099';

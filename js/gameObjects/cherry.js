@@ -3,6 +3,8 @@ class Cherry extends GameObject {
         this.size = 6;
         this.addCollider(this.size * 2, this.size * 2);
 
+        // Create the graphic
+
         this.paths = [
             'M206 466.1h77.8v81.2H206zM740.7 466.1h77.8v81.2h-77.8zM283.9 400.2h91.4v65.9h-91.4zM649.3 400.2h91.4v65.9h-91.4zM375.2 334.2h91.4v65.9h-91.4zM558 334.2h91.4v65.9H558zM466.6 46.1H558v288.2h-91.4z',
             'M128.2 579.5h155.7v358.7H128.2z',
@@ -23,6 +25,7 @@ class Cherry extends GameObject {
     }
 
     onDraw(ctx, frame) {
+        // Draw the cherry
         ctx.scale(0.02, 0.02);
         for (let i = 0; i < this.paths.length; i++) {
             ctx.fillStyle = this.colors[i];
@@ -31,6 +34,8 @@ class Cherry extends GameObject {
     }
 
     onCollision(other) {
+        // If the player collides with the cherry, increase the score and destroy the cherry
+
         if (!other.isOfType(Pacman))
             return;
 

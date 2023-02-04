@@ -1,11 +1,13 @@
 class StartLevel extends Level {
     onLoad() {
+        // Exit fullscreen
         if (document.fullscreenElement) {
             document.exitFullscreen();
         }
     }
 
     onKeyDown(key) {
+        // Load the main level if the player presses the space bar
         switch (key) {
             case ' ':
                 Game.loadLevel(MainLevel);
@@ -14,6 +16,8 @@ class StartLevel extends Level {
     }
 
     onDrawUI(ctx) {
+        // Draw the menu text
+
         ctx.fillStyle = '#ffffff';
 
         ctx.font = '38px Arial';
@@ -27,6 +31,7 @@ class StartLevel extends Level {
     }
 
     onTap(pos) {
+        // Load the main level if the player taps the screen
         Game.loadLevel(MainLevel);
     }
 }
