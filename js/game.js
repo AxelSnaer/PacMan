@@ -5,8 +5,7 @@ const Game = {
     width: 0,
     height: 0,
     keyDown: {},
-    paused: false,
-    state: {}, // Public mutable state to keep track of global game information
+    state: {},
     level: null,
     showColliders: false,
     
@@ -24,9 +23,10 @@ const Game = {
         
         document.addEventListener('keydown', this._onKeyDown.bind(this));
         document.addEventListener('keyup',   this._onKeyUp.bind(this));
-        document.addEventListener('touchstart', this._onTouchStart.bind(this));
-        document.addEventListener('touchmove',  this._onTouchMove.bind(this));
-        document.addEventListener('touchend',   this._onTouchEnd.bind(this));
+
+        this._canvas.addEventListener('touchstart', this._onTouchStart.bind(this));
+        this._canvas.addEventListener('touchmove',  this._onTouchMove.bind(this));
+        this._canvas.addEventListener('touchend',   this._onTouchEnd.bind(this));
 
         window.requestAnimationFrame(this._gameLoop.bind(this));
     },
@@ -56,9 +56,8 @@ const Game = {
 
             this.level._resize(this.width, this.height);
         }
-                
-        if (!this.paused)
-            this.level?._update(this.deltaTime);
+        
+        this.level?._update(this.deltaTime);
         
         this._ctx.setTransform(1, 0, 0, 1, 0, 0);
         this._ctx.fillStyle = '#000000';
@@ -129,7 +128,7 @@ const Game = {
             };
 
             if (gesture.start.equals(gesture.end)) {
-                this.level._press(gesture.start);
+                this.level._tap(gesture.start);
             } else {
                 this.level._gesture(gesture);
             }

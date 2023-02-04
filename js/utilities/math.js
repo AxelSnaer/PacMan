@@ -71,15 +71,4 @@ class Vector2 {
 
         return this;
     }
-
-    lerp(to, t) {
-        this.x = lerp(this.x, to.x, t);
-        this.y = lerp(this.y, to.y, t);
-
-        return this;
-    }
-}
-
-function lerp(v1, v2, t) {
-    return v1 + (v2 - v1) * t;
 }

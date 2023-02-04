@@ -74,11 +74,11 @@ class Level {
         this._objects.forEach(obj => obj.onGesture(gesture));
     }
 
-    _press(pos) {
-        if (this.onPress(pos))
+    _tap(pos) {
+        if (this.onTap(pos))
             return;
 
-        this._objects.forEach(obj => obj.onPress(pos));
+        this._objects.forEach(obj => obj.onTap(pos));
     }
 
     newGameObject(type, x, y, ...args) {

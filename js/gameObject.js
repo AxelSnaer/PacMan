@@ -77,5 +77,5 @@ class GameObject {
     onKeyDown(key) {}
     onKeyUp(key) {}
     onGesture(gesture) {}
-    onPress(pos) {}
+    onTap(pos) {}
 }

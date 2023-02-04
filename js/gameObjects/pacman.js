@@ -1,6 +1,7 @@
-class Pacman extends GameObject {
+class Pacman extends Rigidbody {
     onInit() {
-        this.velocity = new Vector2(0, 0);
+        super.onInit();
+
         this.size  = 10;
         this.speed = 100;
         this.powerUpDuration = 5;
@@ -15,6 +16,9 @@ class Pacman extends GameObject {
     }
 
     onUpdate(delta) {
+        if (!this.deathTimer.isActive())
+            super.onUpdate(delta);
+
         if (this.deathTimer.isActive()) {
             if (this.deathTimer.elapsed() > 1) {
                 Game.loadLevel(GameOverLevel);
@@ -23,8 +27,6 @@ class Pacman extends GameObject {
             return;
         }
 
-        this.pos.add(this.velocity.duplicate().multiply(delta));
-
         if (Game.state.powerUp.elapsed() > this.powerUpDuration) {
             Game.state.powerUp.stopTimer();
         }
@@ -32,11 +34,6 @@ class Pacman extends GameObject {
         if (this.invincibilityFrames.elapsed() > this.invincibilityFrameDuration) {
             this.invincibilityFrames.stopTimer();
         }
-
-        if (this.pos.x - this.size < -Game.width / 2 || this.pos.x + this.size > Game.width / 2)
-            this.velocity.set(-this.velocity.x, this.velocity.y);
-        if (this.pos.y - this.size < -Game.height / 2 || this.pos.y + this.size > Game.height / 2)
-            this.velocity.set(this.velocity.x, -this.velocity.y);
     }
 
     onLateUpdate() {
@@ -100,7 +97,7 @@ class Pacman extends GameObject {
     }
 
     onKeyDown(key) {
-        if (Game.paused)
+        if (this.deathTimer.isActive())
             return;
 
         let hoz  = Number(Game.keyDown['d'] === true) - Number(Game.keyDown['a'] === true);
@@ -116,6 +113,9 @@ class Pacman extends GameObject {
     }
 
     onGesture(gesture) {
+        if (this.deathTimer.isActive())
+            return;
+
         this.velocity = gesture.end.duplicate()
             .sub(gesture.start)
             .normalize()

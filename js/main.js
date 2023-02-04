@@ -6,6 +6,7 @@
 //#include level.js
 //#include game.js
 
+//#include gameObjects/rigidbody.js
 //#include gameObjects/obstacle.js
 //#include gameObjects/ghost.js
 //#include gameObjects/dot.js

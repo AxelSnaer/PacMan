@@ -1,4 +1,10 @@
 class StartLevel extends Level {
+    onLoad() {
+        if (document.fullscreenElement) {
+            document.exitFullscreen();
+        }
+    }
+
     onKeyDown(key) {
         switch (key) {
             case ' ':
@@ -20,7 +26,7 @@ class StartLevel extends Level {
         drawCenteredText(ctx, `Highscore: ${Game.loadVar('highscore')}`, Game.height / 2 + 100);
     }
 
-    onPress(pos) {
+    onTap(pos) {
         Game.loadLevel(MainLevel);
     }
 }

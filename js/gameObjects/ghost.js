@@ -1,27 +1,30 @@
-class Ghost extends GameObject {
-    onInit() {
-        this.color = '#00ccff';
+class Ghost extends Rigidbody {
+    onInit(type) {
+        super.onInit();
+
+        this.type = type;
         this.size = 20;
-        this.speed = 40;
-        this.velocity = new Vector2(1, 1);
         this.move = true;
         this.addCollider(this.size, this.size * 2);
+
+        this.velocity.set(Math.random(), Math.random()).normalize().multiply(70);
     }
 
     onUpdate(delta) {
         if (!this.move)
             return;
 
-        this.pos.add(this.velocity.normalized().multiply(delta).multiply(this.speed));
-        
-        if (this.pos.x - this.size / 2 < -Game.width / 2 || this.pos.x + this.size / 2 > Game.width / 2)
-            this.velocity.set(-this.velocity.x, this.velocity.y);
-        if (this.pos.y - this.size < -Game.height / 2|| this.pos.y + this.size > Game.height / 2)
-            this.velocity.set(this.velocity.x, -this.velocity.y);
+        super.onUpdate(delta);
     }
 
     onDraw(ctx) {
-        ctx.fillStyle = this.color;
+        this.drawMainShape(ctx);
+        this.drawEyes(ctx);
+    }
+
+    drawMainShape(ctx) {
+        let color = this.getColor();
+        ctx.fillStyle = color;
 
         if (Game.state.powerUp.isActive()) {
             ctx.fillStyle = Math.floor(Game.state.powerUp.elapsed() * 8) % 2 === 0
@@ -44,8 +47,9 @@ class Ghost extends GameObject {
         ctx.lineTo(-this.size / 2, this.size / 2);
         ctx.closePath();
         ctx.fill();
+    }
 
-        
+    drawEyes(ctx) {
         let eyeOffset = this.velocity.normalized().multiply(this.size / 8);
         
         ctx.fillStyle = '#ffffff';
@@ -67,5 +71,14 @@ class Ghost extends GameObject {
         ctx.beginPath();
         ctx.arc(eyeOffset.x * 1.2 + this.size / 4, eyeOffset.y * 1.2 - this.size / 2, this.size / 10, 0, 2 * Math.PI);
         ctx.fill();
+    }
+
+    getColor() {
+        switch (this.type) {
+            case 'blinky': return '#ff0000';
+            case 'pinky':  return '#ff0099';
+            case 'inky':   return '#00ccff';
+            case 'clyde':  return '#ffaa00';
+        }
     }
 }

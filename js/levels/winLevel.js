@@ -4,6 +4,10 @@ class WinLevel extends Level {
         if (Game.state.score > highscore) {
             Game.saveVar('highscore', Game.state.score);
         }
+
+        if (document.fullscreenElement) {
+            document.exitFullscreen();
+        }
     }
 
     onKeyDown(key) {
@@ -28,7 +32,7 @@ class WinLevel extends Level {
         drawCenteredText(ctx, `Highscore: ${Game.loadVar('highscore')}`, Game.height / 2 + 100);
     }
 
-    onPress(pos) {
+    onTap(pos) {
         Game.loadLevel(StartLevel);
     }
 }
