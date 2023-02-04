@@ -1,31 +1,27 @@
-//#include math.js
+//#include utilities/math.js
+//#include utilities/graphics.js
+//#include utilities/stopwatch.js
+
 //#include gameObject.js
-//#include obstacle.js
-//#include ghost.js
-//#include dot.js
-//#include powerPellet.js
-//#include pacman.js
-//#include ui.js
+//#include level.js
 //#include game.js
+
+//#include gameObjects/rigidbody.js
+//#include gameObjects/obstacle.js
+//#include gameObjects/ghost.js
+//#include gameObjects/dot.js
+//#include gameObjects/cherry.js
+//#include gameObjects/powerPellet.js
+//#include gameObjects/pacman.js
+
+//#include levels/startLevel.js
+//#include levels/mainLevel.js
+//#include levels/gameOverLevel.js
+//#include levels/winLevel.js
 
 function start() {
     Game.init();
-
-    for (let x = 0; x < 10; x++)
-        for (let y = 0; y < 10; y++)
-            Game.newGameObject(Dot, 100 + x * 25, 100 + y * 25);
-
-    Game.newGameObject(PowerPellet, 75, 75);
-    Game.newGameObject(PowerPellet, 350, 75);
-    Game.newGameObject(PowerPellet, 350, 350);
-    Game.newGameObject(PowerPellet, 75, 350);
-
-    Game.newGameObject(Obstacle, 200, 200);
-
-    Game.newGameObject(Ghost, 100, 100);
-    Game.newGameObject(Pacman, 40, 40);
-
-    Game.newGameObject(UserInterface);
+    Game.loadLevel(StartLevel);
 }
 
 document.addEventListener('DOMContentLoaded', start);

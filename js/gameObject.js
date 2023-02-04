@@ -1,12 +1,11 @@
 class GameObject {
-    constructor(x, y, name) {
-        this.pos = new Vector2(x || 0, y || 0);
+    constructor(x, y, ...args) {
+        this.pos = new Vector2(x, y);
         this.classId = new.target.name;
 
         this.collider = null;
-        this.drawCollider = false;
 
-        this.onInit();
+        this.onInit(...args);
     }
 
     isOfType(type) {
@@ -35,21 +34,28 @@ class GameObject {
             s1.x + p1.y > p2.y;
     }
 
-    drawCollision(ctx) {
-        if (!this.collider || !this.drawCollider)
+    _draw(ctx) {
+        ctx.translate(this.pos.x, this.pos.y);
+        this.onDraw(ctx);
+    }
+
+    _drawCollision(ctx) {
+        if (!this.collider)
             return;
+
+        ctx.translate(this.pos.x + this.collider.offset.x, this.pos.y + this.collider.offset.y);
 
         ctx.strokeStyle = 'rgba(255, 100, 100, 1)';
         ctx.fillStyle = 'rgba(255, 100, 100, 0.5)';
         ctx.fillRect(
-            this.pos.x + this.collider.offset.x - this.collider.size.x / 2,
-            this.pos.y + this.collider.offset.y - this.collider.size.y / 2,
+            -this.collider.size.x / 2,
+            -this.collider.size.y / 2,
             this.collider.size.x,
             this.collider.size.y
         );
         ctx.strokeRect(
-            this.pos.x + this.collider.offset.x - this.collider.size.x / 2,
-            this.pos.y + this.collider.offset.y - this.collider.size.y / 2,
+            -this.collider.size.x / 2,
+            -this.collider.size.y / 2,
             this.collider.size.x,
             this.collider.size.y
         );
@@ -68,7 +74,8 @@ class GameObject {
     onResize(newWidth, newHeight) {}
     
     // Input
-    onKeyDown() {}
-    onKeyUp() {}
-    onGesture() {}
+    onKeyDown(key) {}
+    onKeyUp(key) {}
+    onGesture(gesture) {}
+    onTap(pos) {}
 }

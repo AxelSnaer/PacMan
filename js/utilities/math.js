@@ -1,10 +1,12 @@
+let ab = 0;
+
 class Vector2 {
     x = 0;
     y = 0;
 
     constructor(x, y) {
-        this.x = x || 0;
-        this.y = y || 0;
+        this.x = x ?? 0;
+        this.y = y ?? 0;
     }
 
     duplicate() {
@@ -16,6 +18,10 @@ class Vector2 {
         this.y = y;
 
         return this;
+    }
+
+    equals(other) {
+        return this.x === other.x && this.y === other.y;
     }
 
     normalize() {
@@ -65,15 +71,4 @@ class Vector2 {
 
         return this;
     }
-
-    lerp(to, t) {
-        this.x = lerp(this.x, to.x, t);
-        this.y = lerp(this.y, to.y, t);
-
-        return this;
-    }
-}
-
-function lerp(v1, v2, t) {
-    return v1 + (v2 - v1) * t;
 }
