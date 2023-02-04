@@ -30,7 +30,7 @@ class GameOverLevel extends Level {
         drawCenteredText(ctx, 'Game Over', Game.height / 2);
         
         ctx.font = '17px Arial';
-        drawCenteredText(ctx, '[ Press space to restart ]', Game.height / 2 + 30);
+        drawCenteredText(ctx, 'Press space or tap the screen to restart', Game.height / 2 + 30);
     
         ctx.font = '12px Arial';
         drawCenteredText(ctx, `Score: ${Game.state.score}`, Game.height / 2 + 80);

@@ -24,7 +24,7 @@ class StartLevel extends Level {
         drawCenteredText(ctx, 'PACMAN', Game.height / 2);
         
         ctx.font = '17px Arial';
-        drawCenteredText(ctx, '[ Press space to start ]', Game.height / 2 + 30);
+        drawCenteredText(ctx, 'Press space or tap the screen to start', Game.height / 2 + 30);
 
         ctx.font = '12px Arial';
         drawCenteredText(ctx, `Highscore: ${Game.loadVar('highscore')}`, Game.height / 2 + 100);
