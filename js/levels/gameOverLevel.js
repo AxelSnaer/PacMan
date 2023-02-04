@@ -28,5 +28,7 @@ class GameOverLevel extends Level {
         drawCenteredText(ctx, `Highscore: ${Game.loadVar('highscore')}`, Game.height / 2 + 100);
     }
 
-    
+    onPress(pos) {
+        Game.loadLevel(MainLevel);
+    }
 }

@@ -114,4 +114,11 @@ class Pacman extends GameObject {
             this.velocity = move;
         }
     }
+
+    onGesture(gesture) {
+        this.velocity = gesture.end.duplicate()
+            .sub(gesture.start)
+            .normalize()
+            .multiply(this.speed);
+    }
 }

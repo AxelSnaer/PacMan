@@ -13,6 +13,7 @@ const Game = {
     _oldTimeStamp: 0,
     _canvas: null,
     _ctx: null,
+    _touches: {},
     
     init() {
         this._canvas = document.getElementById('canvas');
@@ -22,7 +23,10 @@ const Game = {
         this.height = this._canvas.clientHeight;
         
         document.addEventListener('keydown', this._onKeyDown.bind(this));
-        document.addEventListener('keyup', this._onKeyUp.bind(this));
+        document.addEventListener('keyup',   this._onKeyUp.bind(this));
+        document.addEventListener('touchstart', this._onTouchStart.bind(this));
+        document.addEventListener('touchmove',  this._onTouchMove.bind(this));
+        document.addEventListener('touchend',   this._onTouchEnd.bind(this));
 
         window.requestAnimationFrame(this._gameLoop.bind(this));
     },
@@ -99,4 +103,36 @@ const Game = {
         this.keyDown[e.key] = false;
         this.level._keyUp(e.key);
     },
+
+    _onTouchStart(e) {
+        e.preventDefault();
+
+        for (let i = 0; i < e.changedTouches.length; i++) {
+            this._touches[e.changedTouches[i].identifier] = e.changedTouches[i];
+        }
+    },
+
+    _onTouchMove(e) {
+        e.preventDefault();
+    },
+
+    _onTouchEnd(e) {
+        e.preventDefault();
+
+        for (let i = 0; i < e.changedTouches.length; i++) {
+            let start = this._touches[e.changedTouches[i].identifier];
+            let end = e.changedTouches[i];
+
+            let gesture = {
+                start: new Vector2(start.clientX, start.clientY),
+                end: new Vector2(end.clientX, end.clientY),
+            };
+
+            if (gesture.start.equals(gesture.end)) {
+                this.level._press(gesture.start);
+            } else {
+                this.level._gesture(gesture);
+            }
+        }
+    }
 };

@@ -74,7 +74,8 @@ class GameObject {
     onResize(newWidth, newHeight) {}
     
     // Input
-    onKeyDown() {}
-    onKeyUp() {}
-    onGesture() {}
+    onKeyDown(key) {}
+    onKeyUp(key) {}
+    onGesture(gesture) {}
+    onPress(pos) {}
 }

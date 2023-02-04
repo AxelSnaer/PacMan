@@ -12,6 +12,7 @@
 //#include gameObjects/cherry.js
 //#include gameObjects/powerPellet.js
 //#include gameObjects/pacman.js
+
 //#include levels/startLevel.js
 //#include levels/mainLevel.js
 //#include levels/gameOverLevel.js
@@ -19,7 +20,7 @@
 
 function start() {
     Game.init();
-    Game.loadLevel(MainLevel);
+    Game.loadLevel(StartLevel);
 }
 
 document.addEventListener('DOMContentLoaded', start);

@@ -54,13 +54,31 @@ class Level {
     }
 
     _keyDown(key) {
-        this.onKeyDown(key);
+        if (this.onKeyDown(key))
+            return;
+
         this._objects.forEach(obj => obj.onKeyDown(key));
     }
 
     _keyUp(key) {
-        this.onKeyUp(key);
+        if (this.onKeyUp(key))
+            return;
+
         this._objects.forEach(obj => obj.onKeyUp(key));
+    }
+
+    _gesture(gesture) {
+        if (this.onGesture(gesture))
+            return;
+
+        this._objects.forEach(obj => obj.onGesture(gesture));
+    }
+
+    _press(pos) {
+        if (this.onPress(pos))
+            return;
+
+        this._objects.forEach(obj => obj.onPos(pos));
     }
 
     newGameObject(type, x, y, ...args) {
@@ -91,4 +109,6 @@ class Level {
     onCleanup() {}
     onKeyDown(key) {}
     onKeyUp(key) {}
+    onGesture(gesture) {}
+    onPress(pos) {}
 }

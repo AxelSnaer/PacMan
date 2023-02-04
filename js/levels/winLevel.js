@@ -28,5 +28,7 @@ class WinLevel extends Level {
         drawCenteredText(ctx, `Highscore: ${Game.loadVar('highscore')}`, Game.height / 2 + 100);
     }
 
-    
+    onPress(pos) {
+        Game.loadLevel(StartLevel);
+    }
 }

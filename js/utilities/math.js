@@ -20,6 +20,10 @@ class Vector2 {
         return this;
     }
 
+    equals(other) {
+        return this.x === other.x && this.y === other.y;
+    }
+
     normalize() {
         let len = this.length();
         if (len === 0)
