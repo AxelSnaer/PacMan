@@ -78,7 +78,7 @@ class Level {
         if (this.onPress(pos))
             return;
 
-        this._objects.forEach(obj => obj.onPos(pos));
+        this._objects.forEach(obj => obj.onPress(pos));
     }
 
     newGameObject(type, x, y, ...args) {
