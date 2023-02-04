@@ -1,10 +1,22 @@
 class PowerPellet extends GameObject {
     onInit() {
         this.size = 10;
+        this.respawnTimer = new Stopwatch();
+        this.respawnTime = 10;
         this.addCollider(this.size * 2, this.size * 2);
     }
 
+    onUpdate(delta) {
+        if (this.respawnTimer.elapsed() > this.respawnTime) {
+            this.respawnTimer.stopTimer();
+        }
+    }
+
     onDraw(ctx) {
+        // If the dot has been used recently, don't draw it
+        if (this.respawnTimer.isActive())
+            return;
+
         let cornerSize = 2;
 
         ctx.fillStyle = '#ffffff';
@@ -17,12 +29,17 @@ class PowerPellet extends GameObject {
         if (other.isOfType(Dot))
             Game.level.destroyGameObject(other);
 
+        // If the dot has been used recently, don't do anything
+        if (this.respawnTimer.isActive())
+            return;
+
         if (!other.isOfType(Pacman))
             return;
             
         // If the player touches the power pellet, then start the power up timer, increase the score and destroy the pellet
         Game.state.powerUp.startTimer();
         Game.state.score += 50;
-        Game.level.destroyGameObject(this);
+
+        this.respawnTimer.startTimer();
     }
 }

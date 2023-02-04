@@ -3,6 +3,8 @@ class Ghost extends Rigidbody {
         super.onInit();
 
         this.type = type;
+        this.deathTimer = new Stopwatch();
+        this.deathTime = 10;
         this.size = 20;
         this.move = true;
         this.addCollider(this.size, this.size * 2);
@@ -14,13 +16,20 @@ class Ghost extends Rigidbody {
         if (!this.move)
             return;
 
+        // If the ghost has been dead for long enough, then respawn him
+        if (this.deathTimer.elapsed() > this.deathTime)
+            this.deathTimer.stopTimer();
+
         // Update the rigidbody
         super.onUpdate(delta);
     }
 
     onDraw(ctx) {
         // Draw the ghost
-        this.drawMainShape(ctx);
+
+        if (!this.deathTimer.isActive())
+            this.drawMainShape(ctx);
+
         this.drawEyes(ctx);
     }
 

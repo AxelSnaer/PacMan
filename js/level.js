@@ -64,7 +64,7 @@ class Level {
             ctx.translate(obj.pos.x, obj.pos.y);
 
             // Draw the object
-            obj._draw(ctx)
+            obj.onDraw(ctx)
         });
 
         // If 'showColliders' is on, then draw every collider

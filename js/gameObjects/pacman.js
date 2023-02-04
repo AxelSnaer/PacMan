@@ -46,9 +46,8 @@ class Pacman extends Rigidbody {
         if (this.deathTimer.isActive())
             return;
 
-        // Get all the dots and power ups in the scene
+        // Get all the dots in the scene
         let dots = Game.level.findGameObjectsOfType(Dot);
-        let pellets = Game.level.findGameObjectsOfType(PowerPellet);
 
         // If there are none left, then load the win level
         if (dots.length + pellets.length === 0) {
@@ -60,11 +59,14 @@ class Pacman extends Rigidbody {
         if (!other.isOfType(Ghost))
             return;
 
-        // If the player touches a ghost
+        if (other.deathTimer.isActive())
+            return;
+
+        // If the player touches a ghost that is not dead
         if (Game.state.powerUp.isActive()) {
-            // and the power up is active, then destroy the ghost and add score
+            // and the power up is active, then kill the ghost and add score
             Game.state.score += 100;
-            Game.level.destroyGameObject(other);
+            other.deathTimer.startTimer();
         } else if (!this.invincibilityFrames.isActive()) {
             // otherwise, if the player is not invincible, then decrease the lives, vibrate the phone and make him invincible
             Game.state.lives--;
